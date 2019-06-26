@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             x:Class="EVBGPOC.Views.SettingsPage" xmlns:vm="clr-namespace:EVBGPOC.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:SettingsViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#CF202A</Color>
+            <Color x:Key="LightTextColor">#999999</Color>
+            <Style x:Key="HeaderText" TargetType="Label">
+                <Setter Property="FontSize">22</Setter>
+                <Setter Property="LineBreakMode">NoWrap</Setter>
+                <Setter Property="Font">Bold,300</Setter>
+            </Style>
+            <Style x:Key="BiggerText" TargetType="Label">
+                <Setter Property="FontSize">16</Setter>
+                <Setter Property="LineBreakMode">NoWrap</Setter>
+                <Setter Property="Font">Bold,300</Setter>
+            </Style>
+            <Style x:Key="NormalText" TargetType="Label">
+                <Setter Property="FontSize">13</Setter>
+                <Setter Property="LineBreakMode">NoWrap</Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollView Grid.Row="1">
+            <StackLayout HorizontalOptions="Fill">
+                <StackLayout Orientation="Vertical"
+                             Padding="20">
+                    <Label Text="Organization:" d:Text="{Binding .}" Style="{DynamicResource HeaderText}" />
+                    <Picker ItemsSource="{Binding OrganizationNames}"
+                            SelectedIndex="{Binding SelectedOrganizationIndex}"
+                            SelectedIndexChanged="OnPickerSelectCommand"
+                            Title="Organization"
+                            VerticalOptions="CenterAndExpand" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical"
+                             Padding="20">
+                    <Label Text="Selected" d:Text="{Binding .}" Style="{DynamicResource HeaderText}" />
+                    <Frame CornerRadius="10"  
+                           BorderColor="{StaticResource Primary}"
+                           BackgroundColor="{StaticResource Primary}"
+                           HasShadow="False"
+                           Padding="10">
+                        <StackLayout>
+                            <Label TextColor="White"
+                                   Text="Organization"
+                                   Style="{DynamicResource BiggerText}" />
+                            <Label TextColor="White"
+                                   Text="{Binding SelectedOrganization.Name}" d:Text="{Binding .}"
+                                   Style="{DynamicResource BiggerText}" />
+                            <Label TextColor="White"
+                                   Text="{Binding SelectedOrganization.EvbgApiUsername}" d:Text="Api Username"
+                                   Style="{DynamicResource NormalText}" />
+                            <Label TextColor="White"
+                                   Text="{Binding SelectedOrganization.EvbgOrganizationId}"
+                                   d:Text="Organization Id" Style="{DynamicResource NormalText}" />
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
