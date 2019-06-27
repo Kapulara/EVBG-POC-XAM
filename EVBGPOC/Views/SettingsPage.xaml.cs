@@ -39,7 +39,7 @@ namespace EVBGPOC.Views
             // OrganizationListView.SelectedItem = null;
         }
 
-        private void OnPickerSelectCommand(object sender, EventArgs e)
+        private void OnPickerSelect(object sender, EventArgs e)
         {
             var picker = (Picker) sender;
 
@@ -47,12 +47,7 @@ namespace EVBGPOC.Views
                 return;
             
             if(vm.Organizations.Count > 0 && picker.SelectedIndex > -1) {
-                vm.SelectedOrganization = vm.Organizations[picker.SelectedIndex];
-                Console.WriteLine(vm.SelectedOrganization.Name);
-            }
-            else
-            {
-                vm.SelectedOrganization = null;
+                vm.SelectOrganization(vm.Organizations[picker.SelectedIndex], picker.SelectedIndex);
             }
         }
     }

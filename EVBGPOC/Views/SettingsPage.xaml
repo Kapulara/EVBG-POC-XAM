@@ -39,9 +39,10 @@
                 <StackLayout Orientation="Vertical"
                              Padding="20">
                     <Label Text="Organization:" d:Text="{Binding .}" Style="{DynamicResource HeaderText}" />
-                    <Picker ItemsSource="{Binding OrganizationNames}"
+                    <Picker ItemsSource="{Binding Organizations}"
+                            ItemDisplayBinding="{Binding Name}"
                             SelectedIndex="{Binding SelectedOrganizationIndex}"
-                            SelectedIndexChanged="OnPickerSelectCommand"
+                            SelectedIndexChanged="OnPickerSelect"
                             Title="Organization"
                             VerticalOptions="CenterAndExpand" />
                 </StackLayout>

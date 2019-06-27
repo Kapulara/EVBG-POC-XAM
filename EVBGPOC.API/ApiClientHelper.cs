@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using EVBGPOC.API.Clients;
 using EVBGPOC.API.Models.Organization;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace EVBGPOC.API
 {
-    public static class ApiClientHelper
+    public class ApiClientHelper
     {
         public static RestClient Client;
 
@@ -25,6 +28,33 @@ namespace EVBGPOC.API
             if (result.ErrorMessage != null)
             {
                 throw new Exception(result.ErrorMessage);
+            }
+            
+            if (!result.IsSuccessful)
+            {
+                throw new Exception(result.StatusDescription);
+            }
+        }
+        
+        public static Task<T> AsyncCall<T>(string url, Method method) where T : new()
+        {
+            Check();
+            var taskCompletionSource = new TaskCompletionSource<T>();
+            var request = new RestRequest(url, method, DataFormat.Json);
+            Client.ExecuteAsync<T>(request,
+                response =>
+                {
+                    HandleException(response);
+                    taskCompletionSource.SetResult(response.Data);
+                });
+            return taskCompletionSource.Task;
+        }
+
+        public static void Check()
+        {
+            if (Client == null)
+            {
+                Init();
             }
         }
     }

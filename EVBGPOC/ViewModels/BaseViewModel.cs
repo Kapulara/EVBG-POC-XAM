@@ -15,10 +15,20 @@ namespace EVBGPOC.ViewModels
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
 
         bool _isBusy;
+        bool _isNotBusy;
         public bool IsBusy
         {
             get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            set
+            {
+                SetProperty(ref _isBusy, value);
+                IsNotBusy = !value;
+            }
+        }
+        public bool IsNotBusy
+        {
+            get { return _isNotBusy; }
+            set { SetProperty(ref _isNotBusy, value); }
         }
 
         string _title = string.Empty;

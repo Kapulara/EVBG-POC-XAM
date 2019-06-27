@@ -1,16 +1,16 @@
 ﻿using System;
-
+using EVBGPOC.API.Models.Organization;
 using EVBGPOC.Models;
 
 namespace EVBGPOC.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public Staff Staff { get; set; }
+        public ItemDetailViewModel(Staff staff = null)
         {
-            Title = item?.Text;
-            Item = item;
+            Title = staff?.Name;
+            Staff = staff;
         }
     }
 }

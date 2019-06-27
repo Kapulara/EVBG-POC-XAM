@@ -49,10 +49,15 @@
   <ItemGroup>
     <Compile Include="ApiClientHelper.cs" />
     <Compile Include="ApiClient.cs" />
+    <Compile Include="Clients\BaseClient.cs" />
+    <Compile Include="Clients\CalendarClient.cs" />
     <Compile Include="Clients\OrganizationClient.cs" />
+    <Compile Include="Clients\TwilioClient.cs" />
     <Compile Include="Models\Organization\Calendar.cs" />
     <Compile Include="Models\Organization\Organization.cs" />
     <Compile Include="Models\Organization\Staff.cs" />
+    <Compile Include="Models\PhoneNumber\PhoneLink.cs" />
+    <Compile Include="Models\PhoneNumber\TwilioPhoneNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

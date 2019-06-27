@@ -8,7 +8,7 @@ namespace EVBGPOC.API.Models.Organization
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public long EvbgOrganizationId { get; set; }
+        public string EvbgOrganizationId { get; set; }
         public object EvbgOrganizationData { get; set; }
         public string EvbgApiUsername { get; set; }
         public List<Calendar> Calendars { get; set; }

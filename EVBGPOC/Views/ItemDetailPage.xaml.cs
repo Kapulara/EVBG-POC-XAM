@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using EVBGPOC.API.Models.Organization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,10 +27,14 @@ namespace EVBGPOC.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var item = new Staff
             {
-                Text = "Item 1",
-                Description = "This is an item description."
+                Id = null,
+                Name = "Unknown",
+                StaffId = null,
+                CalendarId = null,
+                OrganizationId = null,
+                Data = null
             };
 
             viewModel = new ItemDetailViewModel(item);

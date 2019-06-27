@@ -2,39 +2,67 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EVBGPOC.ViewModels;assembly=EVBGPOC"
+             xmlns:iconize="clr-namespace:Plugin.Iconize;assembly=Plugin.Iconize"
+             mc:Ignorable="d"
              x:Class="EVBGPOC.Views.ItemsPage" Title="{Binding Title}" x:Name="BrowseItemsPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+        <ToolbarItem Text="Settings" Clicked="Settings_Clicked" />
     </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <viewModels:ItemsViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#CF202A</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <StackLayout>
-        <StackLayout Padding="10">
-            <Picker Title="Calendar" 
-                    ItemsSource="{Binding Calendars}" >
-            </Picker>
+        <StackLayout Padding="10"
+                     BackgroundColor="{StaticResource Primary}">
+            <StackLayout Padding="10">
+                <Frame HasShadow="False"
+                       CornerRadius="10"
+                       BackgroundColor="White"
+                       BorderColor="White">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Calendar" FontSize="22" />
+                        <Picker Title="Calendar"
+                                x:Name="CalendarPicker"
+                                FontSize="16"
+                                SelectedItem="{Binding SelectedCalendar}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedIndexChanged="OnPickerSelect"
+                                ItemsSource="{Binding Calendars}" />
+                        <StackLayout IsVisible="{Binding IsNotBusy}">
+                            <Button FontSize="14"
+                                    Padding="5"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="white"
+                                    Command="{Binding CallSelectedCalenderCommand}"
+                                    IsVisible="{Binding SelectedCalendar.HasPhoneNumber}"
+                                    Text="{Binding SelectedCalendar.PhoneNumber}" />
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <StackLayout Padding="0,20,0,0">
+                    <Label Text="Currently on duty" FontSize="22" TextColor="White" />
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
-        <ListView x:Name="ItemsListView" ItemsSource="{Binding Items}" VerticalOptions="FillAndExpand"
-                  HasUnevenRows="true" RefreshCommand="{Binding LoadItemsCommand}" IsPullToRefreshEnabled="true"
+        <ListView x:Name="ItemsListView" ItemsSource="{Binding Staff}" VerticalOptions="FillAndExpand"
+                  HasUnevenRows="true" RefreshCommand="{Binding LoadCommand}" IsPullToRefreshEnabled="true"
                   IsRefreshing="{Binding IsBusy, Mode=OneWay}" CachingStrategy="RecycleElement"
                   ItemSelected="OnItemSelected">
-            <d:ListView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>First Item</x:String>
-                    <x:String>Second Item</x:String>
-                    <x:String>Third Item</x:String>
-                    <x:String>Forth Item</x:String>
-                    <x:String>Fifth Item</x:String>
-                    <x:String>Sixth Item</x:String>
-                </x:Array>
-            </d:ListView.ItemsSource>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Text}" d:Text="{Binding .}" LineBreakMode="NoWrap"
+                            <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap"
                                    Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
-                            <Label Text="{Binding Description}" d:Text="Item description" LineBreakMode="NoWrap"
-                                   Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                            <Label Text="{Binding StaffId}" d:Text="{Binding .}" LineBreakMode="NoWrap"
+                                   Style="{DynamicResource ListItemTextStyle}" FontSize="13" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

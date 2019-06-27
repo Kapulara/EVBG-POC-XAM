@@ -1,7 +1,7 @@
 namespace EVBGPOC.Keys
 {
-    public class SettingsKeys
+    public static class SettingsKeys
     {
-        public const string SelectedOrganizationChange = "SelectedOrganizationChange";
+        public const string SelectedOrganizationId = "SelectedOrganizationId";
     }
 }

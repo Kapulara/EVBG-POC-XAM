@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using EVBGPOC.API;
+using EVBGPOC.API.Clients;
 using EVBGPOC.API.Models.Organization;
 using EVBGPOC.Keys;
 using EVBGPOC.Models;
@@ -24,22 +26,20 @@ namespace EVBGPOC.ViewModels
             get => _selectedOrganization;
             set => SetProperty(ref _selectedOrganization, value);
         }
-
-        private bool _isLoading;
+        
         private Organization _selectedOrganization;
-        private ObservableCollection<string> _organizationNames = new ObservableCollection<string>();
-        public ObservableCollection<string> OrganizationNames
-        {
-            get => _organizationNames;
-            set { _organizationNames  = value; OnPropertyChanged(); }
-        }
         public int SelectedOrganizationIndex
         {
             get => _selectedOrganizationIndex;
             set { _selectedOrganizationIndex  = value; OnPropertyChanged(); }
         }
 
-        public List<Organization> Organizations = new List<Organization>();
+        private ObservableCollection<Organization> _organizations = new ObservableCollection<Organization>();
+        public ObservableCollection<Organization> Organizations
+        {
+            get => _organizations;
+            set { _organizations  = value; OnPropertyChanged(); }
+        }
         private int _selectedOrganizationIndex;
 
         public SettingsViewModel()
@@ -48,34 +48,43 @@ namespace EVBGPOC.ViewModels
             RefreshCommand = new Command(Receive);
         }
 
-        public bool IsLoading
-        {
-            get => _isLoading;
-            private set => SetProperty(ref _isLoading, value);
-        }
-
         public ICommand RefreshCommand { get; }
 
 
-        public void Receive()
+        public async void Receive()
         {
-            OrganizationNames.Clear();
             IsBusy = true;
-            Organizations = ApiClient.Instance.OrganizationClient.GetOrganizations();
+            Organizations.Clear();
+            var organizations = await OrganizationClient.GetOrganizations();
 
-            if (Organizations.Count > 0 && SelectedOrganization == null)
+            var selectOrganizationId = AppSettings.GetValueOrDefault(SettingsKeys.SelectedOrganizationId, string.Empty);
+
+            if (organizations.Count > 0)
             {
-                SelectedOrganization = Organizations[0];
-                SelectedOrganizationIndex = 0;
+                var organization = organizations.FirstOrDefault(it => it.Id == selectOrganizationId) ?? organizations[0];
+
+                if (organization != null)
+                {
+                    SelectOrganization(organization, organizations.IndexOf(organization));
+                }
             }
             
-            foreach (var organization in Organizations)
+            foreach (var organization in organizations)
             {
-                OrganizationNames.Add(organization.Name);
+                Organizations.Add(organization);
             }
             
-            Console.WriteLine(JsonConvert.SerializeObject(OrganizationNames));
+            Console.WriteLine(JsonConvert.SerializeObject(Organizations));
             IsBusy = false;
+        }
+
+        public void SelectOrganization(Organization organizationToBeSelected, int index)
+        {
+            if (organizationToBeSelected == null) 
+                return;
+            SelectedOrganization = organizationToBeSelected;
+            SelectedOrganizationIndex = index;
+            AppSettings.AddOrUpdateValue(SettingsKeys.SelectedOrganizationId, $"{SelectedOrganization.EvbgOrganizationId}");
         }
     }
 }

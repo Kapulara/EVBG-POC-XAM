@@ -23,8 +23,12 @@ namespace EVBGPOC.API
         {
             ApiClientHelper.Init();
             OrganizationClient = new OrganizationClient(ApiClientHelper.Client);
+            CalendarClient = new CalendarClient(ApiClientHelper.Client);
+            TwilioClient = new TwilioClient(ApiClientHelper.Client);
         }
 
         public OrganizationClient OrganizationClient;
+        public CalendarClient CalendarClient;
+        public TwilioClient TwilioClient;
     }
 }

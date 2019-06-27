@@ -13,6 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="RestSharp" Version="106.6.9" />
+    <PackageReference Include="Xam.Plugin.Iconize" Version="3.5.0.129" />
+    <PackageReference Include="Xam.Plugin.Iconize.FontAwesome" Version="3.5.0.129" />
+    <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />  
@@ -21,5 +24,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EVBGPOC.API\EVBGPOC.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\CalendarSettingsPage.xaml.cs">
+      <DependentUpon>CalendarSettingsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EVBGPOC.API.Models.Organization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,7 +30,7 @@ namespace EVBGPOC.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
+            var item = args.SelectedItem as Staff;
             if (item == null)
                 return;
 
@@ -39,17 +40,33 @@ namespace EVBGPOC.Views
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        async void Settings_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            if (CalendarPicker.SelectedItem != null)
+            {
+                await Navigation.PushModalAsync(new NavigationPage(new CalendarSettingsPage((Calendar) CalendarPicker.SelectedItem)));
+            }
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            viewModel.IsFirstTime = true;
+            if (viewModel.Staff.Count == 0)
+                viewModel.LoadCommand.Execute(null);
+        }
+
+        private void OnPickerSelect(object sender, EventArgs e)
+        {
+            var picker = (Picker) sender;
+
+            if (!(BindingContext is ItemsViewModel vm)) 
+                return;
+            
+            if(vm.Calendars.Count > 0 && picker.SelectedIndex > -1) {
+                vm.SelectCalendar(vm.Calendars[picker.SelectedIndex]);
+            }
         }
     }
 }

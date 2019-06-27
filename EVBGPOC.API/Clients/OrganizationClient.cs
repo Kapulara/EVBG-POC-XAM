@@ -1,25 +1,20 @@
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EVBGPOC.API.Models.Organization;
 using RestSharp;
 
 namespace EVBGPOC.API.Clients
 {
-    public class OrganizationClient
+    public class OrganizationClient : BaseClient
     {
-        private readonly RestClient _client;
-        
-        public OrganizationClient(RestClient client)
+        public OrganizationClient(RestClient client) : base(client)
         {
-            _client = client;
         }
 
-        public List<Organization> GetOrganizations()
+        public static Task<List<Organization>> GetOrganizations()
         {
-            var result = _client.Execute<List<Organization>>(new RestRequest("/v1/organization", Method.GET, DataFormat.Json));
-            ApiClientHelper.HandleException(result);
-
-            return result.Data;
+            return ApiClientHelper.AsyncCall<List<Organization>>("/v1/organization", Method.GET);
         }
     }
 }
