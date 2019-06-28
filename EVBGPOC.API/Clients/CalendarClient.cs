@@ -19,11 +19,6 @@ namespace EVBGPOC.API.Clients
             return ApiClientHelper.AsyncCall<List<Calendar>>($"/v1/calendar/all/{organizationId}", Method.GET);
         }
 
-        public Task<Calendar> GetCalendarById(string calendarId)
-        {
-            return ApiClientHelper.AsyncCall<Calendar>($"/v1/calendar/{calendarId}", Method.GET);
-        }
-
         public static Task<dynamic> SavePhoneLink(PhoneLink phoneLink)
         {
             var taskCompletionSource = new TaskCompletionSource<dynamic>();

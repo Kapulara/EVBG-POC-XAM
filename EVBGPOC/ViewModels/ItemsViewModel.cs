@@ -29,11 +29,7 @@ namespace EVBGPOC.ViewModels
             Title = "Browse";
             Staff = new ObservableCollection<Staff>();
             Calendars = new ObservableCollection<Calendar>();
-            LoadCommand = new Command(async () =>
-            {
-                await ExecuteLoadCommand(!IsFirstTime);
-                IsFirstTime = false;
-            });
+            LoadCommand = new Command(() => Load());
             CallSelectedCalenderCommand = new Command(async () =>
             {
                 Console.WriteLine("Yes " + SelectedCalendar.PhoneNumber);
@@ -48,6 +44,12 @@ namespace EVBGPOC.ViewModels
                 await CalendarClient.SavePhoneLink(item);
                 await ExecuteLoadCommand(true);
             });
+        }
+
+        public async Task Load(string overrideOrganization = null)
+        {
+            await ExecuteLoadCommand(!IsFirstTime, overrideOrganization);
+            IsFirstTime = false;
         }
 
         private static ISettings AppSettings =>
@@ -65,24 +67,25 @@ namespace EVBGPOC.ViewModels
         public Command LoadCommand { get; set; }
         public ICommand CallSelectedCalenderCommand { get; }
 
-        private async Task ExecuteLoadCommand(bool isRefresh = false)
+        private async Task ExecuteLoadCommand(bool isRefresh = false, string organizationId = null)
         {
             if (IsBusy)
                 return;
 
             IsBusy = true;
-            string organizationId;
-
             var previousSelected = SelectedCalendar?.Id;
 
-            try
+            if (string.IsNullOrEmpty(organizationId))
             {
-                organizationId = $"{AppSettings.GetValueOrDefault(SettingsKeys.SelectedOrganizationId, string.Empty)}";
-            }
-            catch (Exception exception)
-            {
-                organizationId = "";
-                Console.WriteLine(exception.Message);
+                try
+                {
+                    organizationId = $"{AppSettings.GetValueOrDefault(SettingsKeys.SelectedOrganizationId, string.Empty)}";
+                }
+                catch (Exception exception)
+                {
+                    organizationId = "";
+                    Console.WriteLine(exception.Message);
+                }
             }
             
             try

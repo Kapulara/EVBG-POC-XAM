@@ -12,7 +12,6 @@ namespace EVBGPOC.UITests
         public override void BeforeEachTest()
         {
             base.BeforeEachTest();
-
             ItemsPage.WaitForPageToLoad();
         }
 
