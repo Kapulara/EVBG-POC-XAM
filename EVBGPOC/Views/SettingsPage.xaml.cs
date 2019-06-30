@@ -25,19 +25,6 @@ namespace EVBGPOC.Views
             if (BindingContext is SettingsViewModel vm) 
                 vm.Receive();
         }
-        
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var item = args.SelectedItem as Organization;
-            if (item == null)
-                return;
-
-            // await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-
- 
-            // Manually deselect item.
-            // OrganizationListView.SelectedItem = null;
-        }
 
         private void OnPickerSelect(object sender, EventArgs e)
         {

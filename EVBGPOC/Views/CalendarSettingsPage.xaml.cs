@@ -27,7 +27,7 @@ namespace EVBGPOC.Views
             Title = calendar.Name;
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        private async void Save_Clicked(object sender, EventArgs e)
         {
             if (!(BindingContext is CalendarSettingsViewModel vm)) 
                 return;
